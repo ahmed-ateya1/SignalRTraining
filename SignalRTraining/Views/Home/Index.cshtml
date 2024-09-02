@@ -1,8 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "userCount";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-3">Total Views: </div>
+        <div class="col-4">
+            <span id="totalViewsCounter">Loading...</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">Total Users Connection: </div>
+        <div class="col-4">
+            <span id="totalUsersConnection">Loading...</span>
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/signalr.js"></script>
+    <script src="~/js/usersCount.js"></script>
+}
