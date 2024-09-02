@@ -45,6 +45,7 @@ namespace SignalRTraining
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<UserHub>("/hubs/userCount");
+                endpoints.MapHub<DeathlyHallowRaceHub>("/hubs/deathlyHallow");
             });
             app.MapControllerRoute(
                 name: "default",
