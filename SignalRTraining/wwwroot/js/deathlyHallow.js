@@ -13,7 +13,6 @@ connection.on("updateDeathlyHallowyCount", (cloack,stone,wand) => {
     stoneSpan.innerHTML = stone.toString();
     wandSpan.innerHTML = wand.toString();
 
-});
 function fulfilled() {
     console.log("Connection started successfully");
 }
