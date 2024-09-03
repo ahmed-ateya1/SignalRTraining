@@ -25,11 +25,14 @@ namespace SignalRTraining.Controllers
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult HouseGroup()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public IActionResult DeathlyHallowRace()
+        {
+            return View();
         }
         public async Task<IActionResult> DeathlyHallows(string type)
         {
