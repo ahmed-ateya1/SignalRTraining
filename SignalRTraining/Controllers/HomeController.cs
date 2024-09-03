@@ -21,7 +21,7 @@ namespace SignalRTraining.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Notification()
         {
             return View();
         }

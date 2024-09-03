@@ -18,7 +18,6 @@ let trigger_ravenclaw = document.getElementById("trigger_ravenclaw");
 
 //create connection
 var connectionHouse = new signalR.HubConnectionBuilder()
-    //.configureLogging(signalR.LogLevel.Information)
     .withUrl("/hubs/houseGroup").build();
 
 trigger_gryffindor.addEventListener("click", function (event) {
