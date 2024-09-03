@@ -1201,9 +1201,9 @@ class HubConnection {
     constructor(connection, logger, protocol, reconnectPolicy, serverTimeoutInMilliseconds, keepAliveIntervalInMilliseconds, statefulReconnectBufferSize) {
         this._nextKeepAlive = 0;
         this._freezeEventListener = () => {
-            this._logger.log(LogLevel.Warning, "The page is being frozen, this will likely lead to the connection being closed and messages being lost. For more information see the docs at https://learn.microsoft.com/aspnet/core/signalr/javascript-client#bsleep");
+            this._logger.log(LogLevel.Warning, "The page is being frozen, this will likely lead to the connectiondeathlyHallow being closed and messages being lost. For more information see the docs at https://learn.microsoft.com/aspnet/core/signalr/javascript-client#bsleep");
         };
-        Arg.isRequired(connection, "connection");
+        Arg.isRequired(connection, "connectiondeathlyHallow");
         Arg.isRequired(logger, "logger");
         Arg.isRequired(protocol, "protocol");
         this.serverTimeoutInMilliseconds = serverTimeoutInMilliseconds !== null && serverTimeoutInMilliseconds !== void 0 ? serverTimeoutInMilliseconds : DEFAULT_TIMEOUT_IN_MS;
@@ -1371,7 +1371,7 @@ class HubConnection {
             return Promise.resolve();
         }
         if (this._connectionState === HubConnectionState.Disconnecting) {
-            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connection is already in the disconnecting state.`);
+            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connectiondeathlyHallow is already in the disconnecting state.`);
             return this._stopPromise;
         }
         const state = this._connectionState;
@@ -1393,7 +1393,7 @@ class HubConnection {
         }
         this._cleanupTimeout();
         this._cleanupPingTimer();
-        this._stopDuringStartError = error || new AbortError("The connection was stopped before the hub handshake could complete.");
+        this._stopDuringStartError = error || new AbortError("The connectiondeathlyHallow was stopped before the hub handshake could complete.");
         // HttpConnection.stop() should not complete until after either HttpConnection.start() fails
         // or the onclose callback is invoked. The onclose callback will transition the HubConnection
         // to the disconnected state if need be before HttpConnection.stop() completes.
@@ -1800,13 +1800,13 @@ class HubConnection {
     _connectionClosed(error) {
         this._logger.log(LogLevel.Debug, `HubConnection.connectionClosed(${error}) called while in state ${this._connectionState}.`);
         // Triggering this.handshakeRejecter is insufficient because it could already be resolved without the continuation having run yet.
-        this._stopDuringStartError = this._stopDuringStartError || error || new AbortError("The underlying connection was closed before the hub handshake could complete.");
+        this._stopDuringStartError = this._stopDuringStartError || error || new AbortError("The underlying connectiondeathlyHallow was closed before the hub handshake could complete.");
         // If the handshake is in progress, start will be waiting for the handshake promise, so we complete it.
         // If it has already completed, this should just noop.
         if (this._handshakeResolver) {
             this._handshakeResolver();
         }
-        this._cancelCallbacksWithError(error || new Error("Invocation canceled due to the underlying connection being closed."));
+        this._cancelCallbacksWithError(error || new Error("Invocation canceled due to the underlying connectiondeathlyHallow being closed."));
         this._cleanupTimeout();
         this._cleanupPingTimer();
         if (this._connectionState === HubConnectionState.Disconnecting) {
@@ -2474,8 +2474,8 @@ class ServerSentEventsTransport {
                         this._close();
                     }
                     else {
-                        reject(new Error("EventSource failed to connect. The connection could not be found on the server,"
-                            + " either the connection ID is not present on the server, or a proxy is refusing/buffering the connection."
+                        reject(new Error("EventSource failed to connect. The connectiondeathlyHallow could not be found on the server,"
+                            + " either the connectiondeathlyHallow ID is not present on the server, or a proxy is refusing/buffering the connectiondeathlyHallow."
                             + " If you have multiple servers check that sticky sessions are enabled."));
                     }
                 };
@@ -2615,9 +2615,9 @@ class WebSocketTransport {
                         error = event.error;
                     }
                     else {
-                        error = "WebSocket failed to connect. The connection could not be found on the server,"
+                        error = "WebSocket failed to connect. The connectiondeathlyHallow could not be found on the server,"
                             + " either the endpoint may not be a SignalR endpoint,"
-                            + " the connection ID is not present on the server, or there is a proxy blocking WebSockets."
+                            + " the connectiondeathlyHallow ID is not present on the server, or there is a proxy blocking WebSockets."
                             + " If you have multiple servers check that sticky sessions are enabled.";
                     }
                     reject(new Error(error));
@@ -2735,7 +2735,7 @@ class HttpConnection {
     async start(transferFormat) {
         transferFormat = transferFormat || TransferFormat.Binary;
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
-        this._logger.log(LogLevel.Debug, `Starting connection with transfer format '${TransferFormat[transferFormat]}'.`);
+        this._logger.log(LogLevel.Debug, `Starting connectiondeathlyHallow with transfer format '${TransferFormat[transferFormat]}'.`);
         if (this._connectionState !== "Disconnected" /* ConnectionState.Disconnected */) {
             return Promise.reject(new Error("Cannot start an HttpConnection that is not in the 'Disconnected' state."));
         }
@@ -2753,7 +2753,7 @@ class HttpConnection {
         }
         else if (this._connectionState !== "Connected" /* ConnectionState.Connected */) {
             // stop() was called and transitioned the client into the Disconnecting state.
-            const message = "HttpConnection.startInternal completed gracefully but didn't enter the connection into the connected state!";
+            const message = "HttpConnection.startInternal completed gracefully but didn't enter the connectiondeathlyHallow into the connected state!";
             this._logger.log(LogLevel.Error, message);
             return Promise.reject(new AbortError(message));
         }
@@ -2761,7 +2761,7 @@ class HttpConnection {
     }
     send(data) {
         if (this._connectionState !== "Connected" /* ConnectionState.Connected */) {
-            return Promise.reject(new Error("Cannot send data if the connection is not in the 'Connected' State."));
+            return Promise.reject(new Error("Cannot send data if the connectiondeathlyHallow is not in the 'Connected' State."));
         }
         if (!this._sendQueue) {
             this._sendQueue = new TransportSendQueue(this.transport);
@@ -2771,11 +2771,11 @@ class HttpConnection {
     }
     async stop(error) {
         if (this._connectionState === "Disconnected" /* ConnectionState.Disconnected */) {
-            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connection is already in the disconnected state.`);
+            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connectiondeathlyHallow is already in the disconnected state.`);
             return Promise.resolve();
         }
         if (this._connectionState === "Disconnecting" /* ConnectionState.Disconnecting */) {
-            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connection is already in the disconnecting state.`);
+            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connectiondeathlyHallow is already in the disconnecting state.`);
             return this._stopPromise;
         }
         this._connectionState = "Disconnecting" /* ConnectionState.Disconnecting */;
@@ -2841,13 +2841,13 @@ class HttpConnection {
                     negotiateResponse = await this._getNegotiationResponse(url);
                     // the user tries to stop the connection when it is being started
                     if (this._connectionState === "Disconnecting" /* ConnectionState.Disconnecting */ || this._connectionState === "Disconnected" /* ConnectionState.Disconnected */) {
-                        throw new AbortError("The connection was stopped during negotiation.");
+                        throw new AbortError("The connectiondeathlyHallow was stopped during negotiation.");
                     }
                     if (negotiateResponse.error) {
                         throw new Error(negotiateResponse.error);
                     }
                     if (negotiateResponse.ProtocolVersion) {
-                        throw new Error("Detected a connection attempt to an ASP.NET SignalR Server. This client only supports connecting to an ASP.NET Core SignalR Server. See https://aka.ms/signalr-core-differences for details.");
+                        throw new Error("Detected a connectiondeathlyHallow attempt to an ASP.NET SignalR Server. This client only supports connecting to an ASP.NET Core SignalR Server. See https://aka.ms/signalr-core-differences for details.");
                     }
                     if (negotiateResponse.url) {
                         url = negotiateResponse.url;
@@ -2882,7 +2882,7 @@ class HttpConnection {
             // will transition to the disconnected state. start() will wait for the transition using the stopPromise.
         }
         catch (e) {
-            this._logger.log(LogLevel.Error, "Failed to start the connection: " + e);
+            this._logger.log(LogLevel.Error, "Failed to start the connectiondeathlyHallow: " + e);
             this._connectionState = "Disconnected" /* ConnectionState.Disconnected */;
             this.transport = undefined;
             // if start fails, any active calls to stop assume that start will complete the stop promise
@@ -2921,7 +2921,7 @@ class HttpConnection {
             let errorMessage = "Failed to complete negotiation with the server: " + e;
             if (e instanceof HttpError) {
                 if (e.statusCode === 404) {
-                    errorMessage = errorMessage + " Either this is not a SignalR endpoint or there is a proxy blocking the connection.";
+                    errorMessage = errorMessage + " Either this is not a SignalR endpoint or there is a proxy blocking the connectiondeathlyHallow.";
                 }
             }
             this._logger.log(LogLevel.Error, errorMessage);
@@ -3080,12 +3080,12 @@ class HttpConnection {
         error = this._stopError || error;
         this._stopError = undefined;
         if (this._connectionState === "Disconnected" /* ConnectionState.Disconnected */) {
-            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stopConnection(${error}) was ignored because the connection is already in the disconnected state.`);
+            this._logger.log(LogLevel.Debug, `Call to HttpConnection.stopConnection(${error}) was ignored because the connectiondeathlyHallow is already in the disconnected state.`);
             return;
         }
         if (this._connectionState === "Connecting" /* ConnectionState.Connecting */) {
-            this._logger.log(LogLevel.Warning, `Call to HttpConnection.stopConnection(${error}) was ignored because the connection is still in the connecting state.`);
-            throw new Error(`HttpConnection.stopConnection(${error}) was called while the connection is still in the connecting state.`);
+            this._logger.log(LogLevel.Warning, `Call to HttpConnection.stopConnection(${error}) was ignored because the connectiondeathlyHallow is still in the connecting state.`);
+            throw new Error(`HttpConnection.stopConnection(${error}) was called while the connectiondeathlyHallow is still in the connecting state.`);
         }
         if (this._connectionState === "Disconnecting" /* ConnectionState.Disconnecting */) {
             // A call to stop() induced this call to stopConnection and needs to be completed.
@@ -3495,7 +3495,7 @@ class HubConnectionBuilder {
         }
         // Now create the connection
         if (!this.url) {
-            throw new Error("The 'HubConnectionBuilder.withUrl' method must be called before building the connection.");
+            throw new Error("The 'HubConnectionBuilder.withUrl' method must be called before building the connectiondeathlyHallow.");
         }
         const connection = new HttpConnection(this.url, httpConnectionOptions);
         return HubConnection.create(connection, this.logger || NullLogger.instance, this.protocol || new JsonHubProtocol(), this.reconnectPolicy, this._serverTimeoutInMilliseconds, this._keepAliveIntervalInMilliseconds, this._statefulReconnectBufferSize);
