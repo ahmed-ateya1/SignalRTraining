@@ -49,6 +49,7 @@ namespace SignalRTraining
                 endpoints.MapHub<HouseGroupHub>("/hubs/houseGroup");
                 endpoints.MapHub<NotificationHub>("/hubs/notify");
                 endpoints.MapHub<NotificationHub>("/hubs/basicchat");
+                endpoints.MapHub<NotificationHub>("/hubs/order");
             });
             app.MapControllerRoute(
                 name: "default",
